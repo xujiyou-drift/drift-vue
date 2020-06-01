@@ -29,7 +29,7 @@
 
 <script>
     import auth_api from "../api/auth_api";
-    import router from "../router";
+    import drift_init_api from "../api/drift_init_api";
 
     export default {
         name: "Login",
@@ -48,11 +48,31 @@
         },
 
         methods: {
-            submitForm() {
-                let that = this;
-                auth_api.login(this.loginForm).then(res => {
-                    sessionStorage.setItem('token', res["token"]);
-                    that.$router.push(that.$route.query.url);
+            async submitForm() {
+                let loginResult = await auth_api.login(this.loginForm);
+                let token = loginResult["token"];
+                if (token !== undefined) {
+                    sessionStorage.setItem('token', token);
+                    sessionStorage.setItem('tokenStart', new Date().getTime());
+
+                    let driftInitData = await drift_init_api.findDriftInitData();
+                    let code = driftInitData["code"];
+                    if (code === undefined) {
+                        this.loginErr();
+                    } else if (code === 1) {
+                        this.$router.push("/init/select");
+                    } else if (code === 2) {
+                        this.loginErr();
+                    } else {
+                        this.$router.push(this.$route.query.url);
+                    }
+                }
+            },
+
+            loginErr() {
+                this.$notify.error({
+                    title: '登录错误',
+                    message: '请重新登录'
                 });
             },
 
