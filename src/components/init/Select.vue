@@ -44,7 +44,7 @@
 
         methods: {
             ...mapActions('init', [
-                'setActive'
+                'setSelect'
             ]),
 
             async nextStep() {
@@ -58,7 +58,10 @@
                     console.log(result);
                     let code = result["code"];
                     if (code === 0) {
-                        this.setActive(1);
+                        this.setSelect({
+                            currentActive: 1,
+                            checkedComponents: this.driftInit.checkedComponents
+                        });
                         this.$router.push("/init/config");
                     } else {
                         this.$notify.error({

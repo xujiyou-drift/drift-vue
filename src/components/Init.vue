@@ -5,6 +5,7 @@
                 <el-col :span="8" :offset="8">
                     <el-steps :space="200" :active="active" finish-status="success" align-center>
                         <el-step title="选择组件"/>
+                        <el-step title="创建PVC"/>
                         <el-step title="配置组件"/>
                         <el-step title="完成"/>
                     </el-steps>

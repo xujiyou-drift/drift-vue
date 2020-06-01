@@ -4,7 +4,8 @@ export default {
     namespaced: true,
 
     state: {
-        active: 0
+        active: 0,
+        checkedComponents: []
     },
 
     getters: {
@@ -12,16 +13,15 @@ export default {
     },
 
     actions: {
-        setActive (context, currentActive) {
-            console.log("currentActive:" + currentActive);
-            context.commit("setActiveMutation", currentActive);
+        setSelect (context, dataMap) {
+            context.commit("setSelectMutation", dataMap);
         },
     },
 
     mutations: {
-        setActiveMutation(state, currentActive) {
-            state.active = currentActive;
-            console.log("this.state.active:" + this.state.active);
+        setSelectMutation(state, dataMap) {
+            state.active = dataMap["currentActive"];
+            state.checkedComponents = dataMap["checkedComponents"];
         }
     }
 };
