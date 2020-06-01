@@ -15,7 +15,7 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="nextStep">下一步</el-button>
+                            <el-button type="primary" @click="nextStep" :loading="loading" >下一步</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -26,6 +26,7 @@
 
 <script>
     import driftInitApi from "../../api/drift_init_api";
+    import { mapActions } from 'vuex'
 
     export default {
         name: "Select",
@@ -36,12 +37,18 @@
                     namespace: "",
                     checkedComponents: [],
                     components: ["ZooKeeper", "Yarn", "HDFS", "HBase", "Hive", "Kafka", "Spark", "Flink"]
-                }
+                },
+                loading: false
             }
         },
 
         methods: {
+            ...mapActions('init', [
+                'setActive'
+            ]),
+
             async nextStep() {
+                this.loading = true;
                 if (this.driftInit.namespace !== "" && this.driftInit.checkedComponents.length !== 0) {
                     console.log(this.driftInit);
                     let result = await driftInitApi.createDriftInit({
@@ -51,6 +58,7 @@
                     console.log(result);
                     let code = result["code"];
                     if (code === 0) {
+                        this.setActive(1);
                         this.$router.push("/init/config");
                     } else {
                         this.$notify.error({
@@ -59,6 +67,7 @@
                         });
                     }
                 }
+                this.loading = false;
             }
         }
     }
