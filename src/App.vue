@@ -8,9 +8,24 @@
     export default {
         name: 'App',
 
+        created() {
+            if (window.localStorage.getItem("vueData") ) {
+                this.$store.replaceState(
+                    Object.assign(
+                        {},
+                        this.$store.state,
+                        JSON.parse(window.localStorage.getItem("vueData"))
+                    )
+                )
+            }
+            window.addEventListener("beforeunload",()=>{
+                window.localStorage.setItem("vueData",JSON.stringify(this.$store.state))
+            })
+        },
+
         mounted() {
             console.info("APP");
-        }
+        },
     }
 </script>
 
