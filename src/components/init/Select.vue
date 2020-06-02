@@ -49,20 +49,24 @@
 
             async nextStep() {
                 this.loading = true;
+                let nextPath = "/init/pvc";
                 if (this.driftInit.namespace !== "" && this.driftInit.checkedComponents.length !== 0) {
-                    console.log(this.driftInit);
                     let result = await driftInitApi.createDriftInit({
                         namespace: this.driftInit.namespace,
-                        components: this.driftInit.checkedComponents
+                        components: this.driftInit.checkedComponents,
+                        currentPath: nextPath,
+                        active: 1,
+                        complete: false,
                     });
                     console.log(result);
+
                     let code = result["code"];
                     if (code === 0) {
                         this.setSelect({
                             currentActive: 1,
                             checkedComponents: this.driftInit.checkedComponents
                         });
-                        this.$router.push("/init/config");
+                        this.$router.push(nextPath);
                     } else {
                         this.$notify.error({
                             title: '创建错误',

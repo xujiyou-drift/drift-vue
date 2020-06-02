@@ -6,6 +6,7 @@ import Login from '../components/Login'
 import Init from "../components/Init";
 import page404 from "../components/404";
 import Select from "../components/init/Select";
+import PVC from "../components/init/PVC";
 import Config from "../components/init/Config";
 
 Vue.use(Router);
@@ -36,6 +37,10 @@ let router = new Router({
                     path: 'select',
                     name: 'Select',
                     component: Select,
+                }, {
+                    path: 'pvc',
+                    name: 'PVC',
+                    component: PVC,
                 }, {
                     path: 'config',
                     name: 'Config',
