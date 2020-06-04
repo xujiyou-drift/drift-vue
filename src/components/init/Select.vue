@@ -26,7 +26,7 @@
 
 <script>
     import driftInitApi from "../../api/drift_init_api";
-    import { mapActions } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: "Select",
@@ -40,6 +40,18 @@
                 },
                 loading: false
             }
+        },
+
+        created() {
+            this.driftInit.namespace = this.namespace;
+            this.driftInit.checkedComponents = this.checkedComponents;
+        },
+
+        computed: {
+            ...mapState('init', {
+                namespace: 'namespace',
+                checkedComponents: 'checkedComponents'
+            })
         },
 
         methods: {
@@ -64,7 +76,8 @@
                     if (code === 0) {
                         this.setSelect({
                             currentActive: 1,
-                            checkedComponents: this.driftInit.checkedComponents
+                            checkedComponents: this.driftInit.checkedComponents,
+                            namespace: this.driftInit.namespace,
                         });
                         this.$router.push(nextPath);
                     } else {

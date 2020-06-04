@@ -92,7 +92,8 @@
                             // 如果没完成初始化
                             this.setSelect({
                                 currentActive: data["spec"]["active"],
-                                checkedComponents: data["spec"]["components"]
+                                checkedComponents: data["spec"]["components"],
+                                namespace: data["spec"]["namespace"],
                             });
                             this.$router.push(data["spec"]["currentPath"]);
                         }
