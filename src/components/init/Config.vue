@@ -21,7 +21,8 @@
                             <el-input v-model="zookeeper.insidePort" placeholder="请输入内部端口"/>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="nextStep" :loading="loading" >下一步</el-button>
+                            <el-button type="primary" @click="nextStep" :loading="loading">下一步</el-button>
+                            <el-button @click="prevStep">上一步</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapActions } from 'vuex'
 
     export default {
         name: "Config",
@@ -45,7 +46,9 @@
                     leaderPort: 3888,
                     insidePort: 2888,
                 },
-                loading: false
+                loading: false,
+                nextPath: "/init/complete",
+                prevPath: "/init/pvc"
             }
         },
 
@@ -60,9 +63,20 @@
         },
 
         methods: {
+            ...mapActions('init', [
+                'setAction'
+            ]),
+
             nextStep() {
 
-            }
+            },
+
+            prevStep() {
+                this.setAction({
+                    currentActive: 1
+                });
+                this.$router.push(this.prevPath);
+            },
         }
     }
 </script>

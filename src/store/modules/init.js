@@ -3,8 +3,11 @@ export default {
 
     state: {
         active: 0,
+
         checkedComponents: [],
-        namespace: ""
+        namespace: "",
+
+        pvc: {}
     },
 
     getters: {
@@ -18,6 +21,9 @@ export default {
         setAction (context, dataMap) {
             context.commit("setActionMutation", dataMap);
         },
+        setPvc (context, dataMap) {
+            context.commit("setPvcMutation", dataMap);
+        },
     },
 
     mutations: {
@@ -28,6 +34,9 @@ export default {
         },
         setActionMutation(state, dataMap) {
             state.active = dataMap["currentActive"];
-        }
+        },
+        setPvcMutation(state, dataMap) {
+            state.pvc = dataMap["pvc"];
+        },
     }
 };

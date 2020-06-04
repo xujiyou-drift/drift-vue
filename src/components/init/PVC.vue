@@ -11,7 +11,7 @@
                         <el-form-item label="VolumeMode">
                             <el-select v-model="pvc.ZooKeeper.volumeMode" placeholder="请选择卷模式">
                                 <el-option
-                                        v-for="item in pvc.ZooKeeper.volumeModeOptions"
+                                        v-for="item in volumeModeOptions"
                                         :key="item.value"
                                         :label="item.value"
                                         :value="item.value">
@@ -37,7 +37,7 @@
 
 <script>
     import driftInitApi from "../../api/drift_init_api";
-    import { mapActions } from 'vuex'
+    import { mapActions, mapState } from 'vuex'
 
     export default {
         name: "PVC",
@@ -49,24 +49,50 @@
                         storageClass: "",
                         volumeMode: "Block",
                         storage: 10,
-                        volumeModeOptions: [
-                            {
-                                value: 'Block',
-                            }, {
-                                value: 'Filesystem',
-                            }
-                        ]
                     }
                 },
+                volumeModeOptions: [
+                    {
+                        value: 'Block',
+                    }, {
+                        value: 'Filesystem',
+                    }
+                ],
                 loading: false,
                 nextPath: "/init/config",
                 prevPath: "/init/select"
             }
         },
 
+        created() {
+            if (this.statePvc !== undefined) {
+                Object.keys(this.statePvc).forEach((key) => {
+                    let newStorage;
+                    if (parseFloat(this.statePvc[key].storage).toString() === "NaN") {
+                        newStorage = this.statePvc[key].storage.replace("Gi", "");
+                    } else {
+                        newStorage = this.statePvc[key].storage;
+                    }
+
+                    this.pvc[key] = {
+                        storageClass: this.statePvc[key].storageClass,
+                        volumeMode: this.statePvc[key].volumeMode,
+                        storage: newStorage
+                    }
+                });
+            }
+        },
+
+        computed: {
+            ...mapState('init', {
+                statePvc: 'pvc'
+            })
+        },
+
         methods: {
             ...mapActions('init', [
-                'setAction'
+                'setAction',
+                'setPvc'
             ]),
 
             async nextStep() {
@@ -116,6 +142,9 @@
                 if (code === 0) {
                     this.setAction({
                         currentActive: 2
+                    });
+                    this.setPvc({
+                        pvc: this.pvc
                     });
                     this.$router.push(this.nextPath);
                 } else {

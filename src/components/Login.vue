@@ -50,7 +50,8 @@
 
         methods: {
             ...mapActions('init', [
-                'setSelect'
+                'setSelect',
+                'setPvc'
             ]),
 
             async submitForm() {
@@ -94,6 +95,9 @@
                                 currentActive: data["spec"]["active"],
                                 checkedComponents: data["spec"]["components"],
                                 namespace: data["spec"]["namespace"],
+                            });
+                            this.setPvc({
+                                pvc: data["spec"]["pvc"]
                             });
                             this.$router.push(data["spec"]["currentPath"]);
                         }
