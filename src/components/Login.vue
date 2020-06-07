@@ -82,9 +82,11 @@
                         console.log(data);
                         if (data["spec"]["complete"] === true) {
                             //已初始化完成，前往想要前往的地址
-                            if (this.$route.query.url.indexOf("init") !== -1) {
+                            if (this.$route.query.url === undefined) {
+                                this.$router.push("/home");
+                            } else if (this.$route.query.url.indexOf("init") !== -1) {
                                 //已完成初始化了，不允许再进入初始化相关的界面
-                                this.$router.push("/");
+                                this.$router.push("/home");
                             } else {
                                 //不想去初始化界面就随意了
                                 this.$router.push(this.$route.query.url);
@@ -116,7 +118,7 @@
                 this.loginForm.username = "";
                 this.loginForm.password = "";
             }
-        }
+        },
     }
 </script>
 

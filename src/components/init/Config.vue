@@ -14,11 +14,14 @@
                         <el-form-item label="客户端端口">
                             <el-input v-model="zookeeper.clientPort" placeholder="请输入客户端端口"/>
                         </el-form-item>
+                        <el-form-item label="内部端口">
+                            <el-input v-model="zookeeper.serverPort" placeholder="请输入内部端口"/>
+                        </el-form-item>
                         <el-form-item label="选举端口">
                             <el-input v-model="zookeeper.leaderPort" placeholder="请输入选举端口"/>
                         </el-form-item>
-                        <el-form-item label="内部端口">
-                            <el-input v-model="zookeeper.insidePort" placeholder="请输入内部端口"/>
+                        <el-form-item label="数据目录">
+                            <el-input v-model="zookeeper.dataDir" placeholder="请输入数据目录"/>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="nextStep" :loading="loading">下一步</el-button>
@@ -32,6 +35,7 @@
 </template>
 
 <script>
+    import zookeeperApi from "../../api/zookeeper_api";
     import { mapState, mapActions } from 'vuex'
 
     export default {
@@ -40,11 +44,16 @@
         data() {
             return {
                 zookeeper: {
+                    namespace: "",
                     size: 3,
                     minSize: 1,
                     clientPort: 2181,
+                    serverPort: 2888,
                     leaderPort: 3888,
-                    insidePort: 2888,
+                    pvcName: "",
+                    dataDir: "/var/lib/zookeeper",
+                    storageClass: "",
+                    storage: "",
                 },
                 loading: false,
                 nextPath: "/init/complete",
@@ -58,7 +67,9 @@
 
         computed: {
             ...mapState('init', {
-                checkedComponents: 'checkedComponents'
+                namespace: 'namespace',
+                checkedComponents: 'checkedComponents',
+                pvc: 'pvc'
             })
         },
 
@@ -67,8 +78,30 @@
                 'setAction'
             ]),
 
-            nextStep() {
-
+            async nextStep() {
+                if (this.pvc.ZooKeeper !== undefined) {
+                    this.zookeeper.storageClass = this.pvc.ZooKeeper.storageClass;
+                    if ((this.pvc.ZooKeeper.storage + "").endsWith("Gi")) {
+                        this.zookeeper.storage = this.pvc.ZooKeeper.storage;
+                    } else {
+                        this.zookeeper.storage = this.pvc.ZooKeeper.storage + "Gi";
+                    }
+                }
+                this.zookeeper.namespace = this.namespace;
+                let result = await zookeeperApi.createZookeeper(this.zookeeper);
+                console.log(result);
+                let code = result["code"];
+                if (code === 0) {
+                    this.setAction({
+                        currentActive: 4
+                    });
+                    this.$router.push(this.nextPath);
+                } else {
+                    this.$notify.error({
+                        title: '创建错误',
+                        message: '请重试'
+                    });
+                }
             },
 
             prevStep() {

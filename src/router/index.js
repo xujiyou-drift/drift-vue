@@ -8,6 +8,7 @@ import page404 from "../components/404";
 import Select from "../components/init/Select";
 import PVC from "../components/init/PVC";
 import Config from "../components/init/Config";
+import Complete from "../components/init/Complete";
 
 Vue.use(Router);
 
@@ -16,6 +17,13 @@ let router = new Router({
     routes: [
         {
             path: '/',
+            name: 'Home',
+            component: Home,
+            meta:{
+                requireLogin: true
+            }
+        }, {
+            path: '/home',
             name: 'Home',
             component: Home,
             meta:{
@@ -45,6 +53,10 @@ let router = new Router({
                     path: 'config',
                     name: 'Config',
                     component: Config,
+                }, {
+                    path: 'complete',
+                    name: 'Complete',
+                    component: Complete,
                 }
             ]
         }, {

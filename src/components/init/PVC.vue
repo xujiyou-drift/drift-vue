@@ -8,16 +8,6 @@
                         <el-form-item label="StorageClass">
                             <el-input v-model="pvc.ZooKeeper.storageClass" placeholder="请输入储存类"/>
                         </el-form-item>
-                        <el-form-item label="VolumeMode">
-                            <el-select v-model="pvc.ZooKeeper.volumeMode" placeholder="请选择卷模式">
-                                <el-option
-                                        v-for="item in volumeModeOptions"
-                                        :key="item.value"
-                                        :label="item.value"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
                         <el-form-item label="容量">
                             <el-input v-model="pvc.ZooKeeper.storage" placeholder="请输入储存容量" type="number">
                                 <template slot="append">Gi</template>
@@ -47,17 +37,9 @@
                 pvc: {
                     ZooKeeper: {
                         storageClass: "",
-                        volumeMode: "Block",
                         storage: 10,
                     }
                 },
-                volumeModeOptions: [
-                    {
-                        value: 'Block',
-                    }, {
-                        value: 'Filesystem',
-                    }
-                ],
                 loading: false,
                 nextPath: "/init/config",
                 prevPath: "/init/select"
@@ -68,7 +50,7 @@
             if (this.statePvc !== undefined) {
                 Object.keys(this.statePvc).forEach((key) => {
                     let newStorage;
-                    if (parseFloat(this.statePvc[key].storage).toString() === "NaN") {
+                    if (this.statePvc[key].storage.endsWith("Gi")) {
                         newStorage = this.statePvc[key].storage.replace("Gi", "");
                     } else {
                         newStorage = this.statePvc[key].storage;
@@ -76,7 +58,6 @@
 
                     this.pvc[key] = {
                         storageClass: this.statePvc[key].storageClass,
-                        volumeMode: this.statePvc[key].volumeMode,
                         storage: newStorage
                     }
                 });
@@ -96,6 +77,13 @@
             ]),
 
             async nextStep() {
+                if (this.pvc.ZooKeeper.storageClass === "" || this.pvc.ZooKeeper.storage == 0) {
+                    this.$notify.error({
+                        title: '创建错误',
+                        message: '请输入必要信息'
+                    });
+                    return
+                }
                 this.loading = true;
                 let record = {
                     currentPath: this.nextPath,
@@ -103,7 +91,6 @@
                     pvc: {
                         ZooKeeper: {
                             storageClass: this.pvc.ZooKeeper.storageClass,
-                            volumeMode: this.pvc.ZooKeeper.volumeMode,
                             storage: this.pvc.ZooKeeper.storage + "Gi",
                         }
                     }
