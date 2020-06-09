@@ -8,6 +8,7 @@
 
 <script>
     import driftInitApi from "../../api/drift_init_api";
+    import { mapActions } from 'vuex'
 
     export default {
         name: "Complete",
@@ -19,12 +20,19 @@
         },
 
         methods: {
+            ...mapActions('init', [
+                'setComplete'
+            ]),
+
             async complete() {
                 this.loading = true;
                 let result = await driftInitApi.complete();
                 console.log(result);
                 let code = result["code"];
                 if (code === 0) {
+                    this.setComplete({
+                        "complete": true
+                    });
                     this.$router.push("/home");
                 } else {
                     this.$notify.error({

@@ -51,7 +51,8 @@
         methods: {
             ...mapActions('init', [
                 'setSelect',
-                'setPvc'
+                'setPvc',
+                'setComplete'
             ]),
 
             async submitForm() {
@@ -81,7 +82,8 @@
                                         "active": 0,
                                         "checkedComponents": [],
                                         "namespace": "",
-                                        "pvc": {}
+                                        "pvc": {},
+                                        "complete": false
                                     }
                                 }
                             )
@@ -97,6 +99,9 @@
                         console.log(data);
                         if (data["spec"]["complete"] === true) {
                             //已初始化完成，前往想要前往的地址
+                            this.setComplete({
+                                "complete": true
+                            });
                             if (this.$route.query.url === undefined) {
                                 this.$router.push("/home");
                             } else if (this.$route.query.url.indexOf("init") !== -1) {

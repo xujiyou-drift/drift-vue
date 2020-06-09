@@ -7,7 +7,9 @@ export default {
         checkedComponents: [],
         namespace: "",
 
-        pvc: {}
+        pvc: {},
+
+        complete: false
     },
 
     getters: {
@@ -24,6 +26,9 @@ export default {
         setPvc (context, dataMap) {
             context.commit("setPvcMutation", dataMap);
         },
+        setComplete (context, dataMap) {
+            context.commit("setCompleteMutation", dataMap);
+        },
     },
 
     mutations: {
@@ -37,6 +42,10 @@ export default {
         },
         setPvcMutation(state, dataMap) {
             state.pvc = dataMap["pvc"];
+        },
+        setCompleteMutation(state, dataMap) {
+            state.complete = dataMap["complete"];
+            window.sessionStorage.setItem("complete", dataMap["complete"])
         },
     }
 };

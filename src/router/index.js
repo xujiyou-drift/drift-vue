@@ -73,7 +73,17 @@ router.beforeEach((to, from, next) => {
         let tokenStart = sessionStorage.getItem('tokenStart');
         let oneHourAgo = new Date().getTime() - 3600000;
         if (token !== undefined && oneHourAgo < tokenStart) {  // 判断当前用户的登录信息是否存在，并且没有过期
-            next();
+            if (to.fullPath.indexOf("init") !== -1) {
+                if (sessionStorage.getItem("complete")) {
+                    next({
+                        path: '/home'
+                    })
+                } else {
+                    next();
+                }
+            } else {
+                next();
+            }
         } else {
             console.info(to.fullPath);
             next({

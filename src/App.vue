@@ -19,7 +19,7 @@
                 )
             }
             window.addEventListener("beforeunload",()=>{
-                window.sessionStorage.setItem("vueData",JSON.stringify(this.$store.state))
+                window.sessionStorage.setItem("vueData", JSON.stringify(this.$store.state))
             })
         },
 
