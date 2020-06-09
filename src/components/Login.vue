@@ -28,8 +28,8 @@
 </template>
 
 <script>
-    import auth_api from "../api/auth_api";
-    import drift_init_api from "../api/drift_init_api";
+    import auth_api from "../api/frist/auth_api";
+    import drift_init_api from "../api/frist/drift_init_api";
     import { mapActions } from 'vuex'
 
     export default {

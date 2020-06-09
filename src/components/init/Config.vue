@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import zookeeperApi from "../../api/zookeeper_api";
+    import zookeeperApi from "../../api/frist/zookeeper_api";
     import { mapState, mapActions } from 'vuex'
 
     export default {

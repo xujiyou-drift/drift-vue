@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import driftInitApi from "../../api/drift_init_api";
+    import driftInitApi from "../../api/frist/drift_init_api";
     import { mapActions, mapState } from 'vuex'
 
     export default {
