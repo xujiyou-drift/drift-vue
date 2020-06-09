@@ -9,17 +9,17 @@
         name: 'App',
 
         created() {
-            if (window.localStorage.getItem("vueData") ) {
+            if (window.sessionStorage.getItem("vueData") ) {
                 this.$store.replaceState(
                     Object.assign(
                         {},
                         this.$store.state,
-                        JSON.parse(window.localStorage.getItem("vueData"))
+                        JSON.parse(window.sessionStorage.getItem("vueData"))
                     )
                 )
             }
             window.addEventListener("beforeunload",()=>{
-                window.localStorage.setItem("vueData",JSON.stringify(this.$store.state))
+                window.sessionStorage.setItem("vueData",JSON.stringify(this.$store.state))
             })
         },
 

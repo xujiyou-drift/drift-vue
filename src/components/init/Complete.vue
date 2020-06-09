@@ -20,6 +20,7 @@
 
         methods: {
             async complete() {
+                this.loading = true;
                 let result = await driftInitApi.complete();
                 console.log(result);
                 let code = result["code"];
@@ -31,6 +32,7 @@
                         message: '请重试'
                     });
                 }
+                this.loading = false;
             }
         }
     }

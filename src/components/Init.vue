@@ -20,7 +20,12 @@
     import { mapState } from 'vuex'
 
     export default {
+
         name: "Init",
+
+        created() {
+            console.log(this.active)
+        },
 
         computed: {
             ...mapState('init', {

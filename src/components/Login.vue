@@ -72,6 +72,21 @@
                         this.loginErr("登录错误，请重试");
                     } else if (code === 1) {
                         //还没有初始化过，进入初始化界面
+                        this.$store.replaceState(
+                            Object.assign(
+                                {},
+                                this.$store.state,
+                                {
+                                    "init": {
+                                        "active": 0,
+                                        "checkedComponents": [],
+                                        "namespace": "",
+                                        "pvc": {}
+                                    }
+                                }
+                            )
+                        );
+                        window.sessionStorage.setItem("vueData",JSON.stringify(this.$store.state));
                         this.$router.push("/init/select");
                     } else if (code === 2) {
                         //获取初始化数据失败

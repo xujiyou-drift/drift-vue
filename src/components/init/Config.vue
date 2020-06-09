@@ -79,6 +79,7 @@
             ]),
 
             async nextStep() {
+                this.loading = true;
                 if (this.pvc.ZooKeeper !== undefined) {
                     this.zookeeper.storageClass = this.pvc.ZooKeeper.storageClass;
                     if ((this.pvc.ZooKeeper.storage + "").endsWith("Gi")) {
@@ -102,6 +103,7 @@
                         message: '请重试'
                     });
                 }
+                this.loading = false;
             },
 
             prevStep() {
