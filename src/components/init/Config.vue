@@ -14,6 +14,9 @@
                         <el-form-item label="客户端端口">
                             <el-input v-model="zookeeper.clientPort" placeholder="请输入客户端端口"/>
                         </el-form-item>
+                        <el-form-item label="监控端口">
+                            <el-input v-model="zookeeper.metricsPort" placeholder="请输入监控端口"/>
+                        </el-form-item>
                         <el-form-item label="内部端口">
                             <el-input v-model="zookeeper.serverPort" placeholder="请输入内部端口"/>
                         </el-form-item>
@@ -48,6 +51,7 @@
                     size: 3,
                     minSize: 1,
                     clientPort: 2181,
+                    metricsPort: 7000,
                     serverPort: 2888,
                     leaderPort: 3888,
                     pvcName: "",
