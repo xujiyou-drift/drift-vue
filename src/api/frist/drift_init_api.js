@@ -30,6 +30,16 @@ export default {
         }).then(res => res.json()).catch(error => console.error('Error:', error));
     },
 
+    completeConfig() {
+        return fetch("http://localhost:8000/api/init/config", {
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+            })
+        }).then(res => res.json()).catch(error => console.error('Error:', error));
+    },
+
     complete() {
         return fetch("http://localhost:8000/api/init/complete", {
             method: 'POST',

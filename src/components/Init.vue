@@ -7,7 +7,6 @@
                         <el-step title="选择组件"/>
                         <el-step title="创建储存"/>
                         <el-step title="配置组件"/>
-                        <el-step title="监控"/>
                         <el-step title="完成"/>
                     </el-steps>
                 </el-col>

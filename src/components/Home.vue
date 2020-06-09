@@ -20,19 +20,19 @@
                 </el-table-column>
                 <el-table-column
                         prop="status.phase"
-                        label="状态" width="100">
+                        label="状态" width="180">
                 </el-table-column>
                 <el-table-column
                         prop="status.containerStatuses[0].restartCount"
                         label="重启次数" width="100">
                 </el-table-column>
-                <el-table-column
-                        prop="status.containerStatuses[0].restartCount"
-                        label="启动时间" width="100">
-                    <template slot-scope="scope">
-                        <span>{{ getDateTimeDiff(Date.parse(scope.row.status.containerStatuses[0].state.running.startedAt), new Date().getTime()).PubTime }}</span>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column v-if="scope.row.status.containerStatuses"-->
+<!--                        prop="status.containerStatuses[0].restartCount"-->
+<!--                        label="启动时间" width="100">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <span>{{ getDateTimeDiff(Date.parse(scope.row.status.containerStatuses[0].state.running.startedAt), new Date().getTime()).PubTime }}</span>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
                 <el-table-column
                         prop="status.podIP"
                         label="Pod IP" width="120">

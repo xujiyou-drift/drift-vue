@@ -4,7 +4,7 @@ export default {
     state: {
         active: 0,
 
-        checkedComponents: [],
+        checkedComponents: ["ZooKeeper"],
         namespace: "",
 
         pvc: {},

@@ -3,16 +3,29 @@
         <div class="pvc">
             <el-row :gutter="20">
                 <el-col :span="8" :offset="8">
-                    <h3>为 ZooKeeper 创建 PVC：</h3>
-                    <el-form ref="form" :model="pvc.ZooKeeper" label-width="100px">
-                        <el-form-item label="StorageClass">
-                            <el-input v-model="pvc.ZooKeeper.storageClass" placeholder="请输入储存类"/>
-                        </el-form-item>
-                        <el-form-item label="容量">
-                            <el-input v-model="pvc.ZooKeeper.storage" placeholder="请输入储存容量" type="number">
-                                <template slot="append">Gi</template>
-                            </el-input>
-                        </el-form-item>
+                    <el-form ref="form" label-width="100px">
+                        <div>
+                            <h3>为 ZooKeeper 创建 PVC：</h3>
+                            <el-form-item label="StorageClass">
+                                <el-input v-model="pvc.ZooKeeper.storageClass" placeholder="请输入储存类"/>
+                            </el-form-item>
+                            <el-form-item label="容量">
+                                <el-input v-model="pvc.ZooKeeper.storage" placeholder="请输入储存容量" type="number">
+                                    <template slot="append">Gi</template>
+                                </el-input>
+                            </el-form-item>
+                        </div>
+                        <div v-if="checkedComponents.indexOf('Kafka') !== -1">
+                            <h3>为 Kafka 创建 PVC：</h3>
+                            <el-form-item label="StorageClass">
+                                <el-input v-model="pvc.Kafka.storageClass" placeholder="请输入储存类"/>
+                            </el-form-item>
+                            <el-form-item label="容量">
+                                <el-input v-model="pvc.Kafka.storage" placeholder="请输入储存容量" type="number">
+                                    <template slot="append">Gi</template>
+                                </el-input>
+                            </el-form-item>
+                        </div>
                         <el-form-item>
                             <el-button type="primary" @click="nextStep" :loading="loading" >下一步</el-button>
                             <el-button @click="prevStep">上一步</el-button>
@@ -38,7 +51,11 @@
                     ZooKeeper: {
                         storageClass: "",
                         storage: 10,
-                    }
+                    },
+                    Kafka: {
+                        storageClass: "",
+                        storage: 10,
+                    },
                 },
                 loading: false,
                 nextPath: "/init/config",
@@ -66,7 +83,8 @@
 
         computed: {
             ...mapState('init', {
-                statePvc: 'pvc'
+                statePvc: 'pvc',
+                checkedComponents: 'checkedComponents'
             })
         },
 
@@ -80,10 +98,20 @@
                 if (this.pvc.ZooKeeper.storageClass === "" || this.pvc.ZooKeeper.storage == 0) {
                     this.$notify.error({
                         title: '创建错误',
-                        message: '请输入必要信息'
+                        message: '为 ZooKeeper 创建 PVC 需要输入必要信息'
                     });
                     return
                 }
+                if (this.checkedComponents.indexOf('Kafka') !== -1) {
+                    if (this.pvc.Kafka.storageClass === "" || this.pvc.Kafka.storage == 0) {
+                        this.$notify.error({
+                            title: '创建错误',
+                            message: '为 Kafka 创建 PVC 需要输入必要信息'
+                        });
+                        return
+                    }
+                }
+
                 this.loading = true;
                 let record = {
                     currentPath: this.nextPath,
@@ -95,6 +123,13 @@
                         }
                     }
                 };
+                if (this.checkedComponents.indexOf('Kafka') !== -1) {
+                    record.pvc["Kafka"] = {
+                        storageClass: this.pvc.Kafka.storageClass,
+                        storage: this.pvc.Kafka.storage + "Gi",
+                    }
+                }
+
                 await this.pushData(record);
                 this.loading = false;
             },

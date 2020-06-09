@@ -80,7 +80,7 @@
                                 {
                                     "init": {
                                         "active": 0,
-                                        "checkedComponents": [],
+                                        "checkedComponents": ["ZooKeeper"],
                                         "namespace": "",
                                         "pvc": {},
                                         "complete": false

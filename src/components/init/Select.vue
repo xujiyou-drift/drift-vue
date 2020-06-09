@@ -9,7 +9,8 @@
                         </el-form-item>
                         <el-form-item label="选择组件">
                             <el-checkbox-group v-model="driftInit.checkedComponents">
-                                <el-checkbox v-for="(component, i) in driftInit.components" :label="component" :key="i" :disabled="component !== 'ZooKeeper'">
+                                <el-checkbox v-for="(component, i) in driftInit.components" :label="component" :key="i"
+                                             :disabled="component !== 'ZooKeeper' && component !== 'Kafka'">
                                     {{component}}
                                 </el-checkbox>
                             </el-checkbox-group>
@@ -35,8 +36,8 @@
             return {
                 driftInit: {
                     namespace: "",
-                    checkedComponents: [],
-                    components: ["ZooKeeper", "Yarn", "HDFS", "HBase", "Hive", "Kafka", "Spark", "Flink"]
+                    checkedComponents: ["ZooKeeper"],
+                    components: ["ZooKeeper", "Kafka", "Yarn", "HDFS", "HBase", "Hive",  "Spark", "Flink"]
                 },
                 loading: false
             }
@@ -60,6 +61,13 @@
             ]),
 
             async nextStep() {
+                if (this.driftInit.checkedComponents.indexOf("ZooKeeper") == -1) {
+                    this.$notify.error({
+                        title: '创建错误',
+                        message: '所选组件中必须包含 ZooKeeper'
+                    });
+                    return
+                }
                 this.loading = true;
                 let nextPath = "/init/pvc";
                 if (this.driftInit.namespace !== "" && this.driftInit.checkedComponents.length !== 0) {
