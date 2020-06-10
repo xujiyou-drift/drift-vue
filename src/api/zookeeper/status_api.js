@@ -1,7 +1,8 @@
 export default {
-    findStatus() {
+    findStatus(findInfo) {
         return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/zookeeper/status`, {
             method: 'POST',
+            body: JSON.stringify(findInfo),
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token')

@@ -108,6 +108,7 @@
 <script>
     import ZooKeeperStatusApi from "../api/zookeeper/status_api";
     import kafkaStatusApi from "../api/kafka/kafka_status_api";
+    import { mapState } from 'vuex'
 
     export default {
         name: "Home",
@@ -117,13 +118,27 @@
                 podList: [],
                 kafkaPodList: [],
                 loading: true,
-                kafkaLoading: true
+                kafkaLoading: true,
+                zookeeperReader: {},
+                kafkaReader: {}
             }
         },
 
         async mounted() {
            this.findZooKeeperStatus();
            this.findKafkaStatus();
+        },
+
+        computed: {
+            ...mapState('init', {
+                namespace: 'namespace',
+            })
+        },
+
+        destroyed () {
+            console.log("我已经离开了！");
+            this.zookeeperReader.close();
+            this.kafkaReader();
         },
 
         methods: {
@@ -139,8 +154,10 @@
 
             async findZooKeeperStatus() {
                 let that = this;
-                let reader = await ZooKeeperStatusApi.findStatus();
-                reader.read().then(function processText({ done, value }) {
+                this.zookeeperReader = await ZooKeeperStatusApi.findStatus({
+                    namespace: this.namespace
+                });
+                this.zookeeperReader.read().then(function processText({ done, value }) {
                     if (done) {
                         console.log("Stream complete");
                         return;
@@ -154,14 +171,16 @@
                     that.podList = list;
                     that.loading = false;
                     console.log(that.podList);
-                    return reader.read().then(processText);
+                    return that.zookeeperReader.read().then(processText);
                 });
             },
 
             async findKafkaStatus() {
                 let that = this;
-                let reader = await kafkaStatusApi.findStatus();
-                reader.read().then(function processText({ done, value }) {
+                this.kafkaReader = await kafkaStatusApi.findStatus({
+                    namespace: this.namespace
+                });
+                this.kafkaReader.read().then(function processText({ done, value }) {
                     if (done) {
                         console.log("Stream complete");
                         return;
@@ -175,7 +194,7 @@
                     that.kafkaPodList = list;
                     that.kafkaLoading = false;
                     console.log(that.podList);
-                    return reader.read().then(processText);
+                    return that.kafkaReader.read().then(processText);
                 });
             }
 

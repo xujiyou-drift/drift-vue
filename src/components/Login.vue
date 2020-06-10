@@ -97,6 +97,15 @@
                         //存在初始化数据了
                         let data = driftInitData["data"];
                         console.log(data);
+
+                        this.setSelect({
+                            currentActive: data["spec"]["active"],
+                            checkedComponents: data["spec"]["components"],
+                            namespace: data["spec"]["namespace"],
+                        });
+                        this.setPvc({
+                            pvc: data["spec"]["pvc"]
+                        });
                         if (data["spec"]["complete"] === true) {
                             //已初始化完成，前往想要前往的地址
                             this.setComplete({
@@ -113,14 +122,6 @@
                             }
                         } else {
                             // 如果没完成初始化
-                            this.setSelect({
-                                currentActive: data["spec"]["active"],
-                                checkedComponents: data["spec"]["components"],
-                                namespace: data["spec"]["namespace"],
-                            });
-                            this.setPvc({
-                                pvc: data["spec"]["pvc"]
-                            });
                             this.$router.push(data["spec"]["currentPath"]);
                         }
                     }
