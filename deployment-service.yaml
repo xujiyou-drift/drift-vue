@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: drift-vue-svc
+  namespace: drift
+  labels:
+    app: drift-vue
+spec:
+  selector:
+    app: drift-vue
+  ports:
+    - port: 80
+      name: http
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drift-vue
+  namespace: drift
+  labels:
+    app: drift-vue
+spec:
+  selector:
+    matchLabels:
+      app: drift-vue
+  template:
+    metadata:
+      labels:
+        app: drift-vue
+    spec:
+      containers:
+        - name: drift-vue
+          image: registry.prod.bbdops.com/common/drift-vue:v0.0.1
+          ports:
+            - containerPort: 80
+          env:
+            - name: DRIFT_BACKEND_ADDRESS
+              value: localhost:8000
