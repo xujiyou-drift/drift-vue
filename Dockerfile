@@ -8,7 +8,8 @@ COPY ./ /opt/drift-vue
 COPY nginx.conf /etc/nginx/nginx.conf
 
 RUN chmod +x /opt/drift-vue/start-build.sh
-RUN /opt/drift-vue/start-build.sh
+
+ENTRYPOINT ["/opt/drift-vue/start-build.sh"]
 
 
 
