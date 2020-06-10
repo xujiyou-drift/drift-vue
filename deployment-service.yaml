@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: drift-vue
-          image: registry.prod.bbdops.com/common/drift-vue:v0.0.2
+          image: registry.prod.bbdops.com/common/drift-vue:v0.0.3
           ports:
             - containerPort: 80
           env:
