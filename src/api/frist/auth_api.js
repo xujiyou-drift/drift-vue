@@ -1,7 +1,7 @@
 
 export default {
     login(loginData) {
-        return fetch("http://localhost:8000/login", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/login`, {
             method: 'POST',
             body: JSON.stringify(loginData),
             headers: new Headers({

@@ -24,7 +24,7 @@
         },
 
         mounted() {
-            console.info("APP");
+            console.info(process.env.VUE_APP_BACKEND_ADDRESS);
         },
     }
 </script>

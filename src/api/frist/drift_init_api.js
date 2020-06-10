@@ -1,7 +1,7 @@
 
 export default {
     findDriftInitData() {
-        return fetch("http://localhost:8000/api/init", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init`, {
             headers: new Headers({
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             })
@@ -9,7 +9,7 @@ export default {
     },
 
     createDriftInit(driftInit) {
-        return fetch("http://localhost:8000/api/init", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init`, {
             method: 'POST',
             body: JSON.stringify(driftInit),
             headers: new Headers({
@@ -20,7 +20,7 @@ export default {
     },
 
     recordPvc(pvcRecord) {
-        return fetch("http://localhost:8000/api/init/pvc", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init/pvc`, {
             method: 'POST',
             body: JSON.stringify(pvcRecord),
             headers: new Headers({
@@ -31,7 +31,7 @@ export default {
     },
 
     completeConfig() {
-        return fetch("http://localhost:8000/api/init/config", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init/config`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export default {
     },
 
     complete() {
-        return fetch("http://localhost:8000/api/init/complete", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init/complete`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',

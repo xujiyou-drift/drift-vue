@@ -1,6 +1,6 @@
 export default {
     createKafka(kafkaInfo) {
-        return fetch("http://localhost:8000/api/init/kafka", {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/init/kafka`, {
             method: 'POST',
             body: JSON.stringify(kafkaInfo),
             headers: new Headers({
