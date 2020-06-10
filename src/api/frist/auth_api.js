@@ -1,7 +1,7 @@
 
 export default {
     login(loginData) {
-        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/login`, {
+        return fetch(`http://${process.env.VUE_APP_BACKEND_ADDRESS}/api/login`, {
             method: 'POST',
             body: JSON.stringify(loginData),
             headers: new Headers({
