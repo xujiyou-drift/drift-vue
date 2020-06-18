@@ -30,6 +30,9 @@
                         </div>
                         <div v-if="checkedComponents.indexOf('Kafka') !== -1">
                             <h3>Kafka：</h3>
+                            <el-form-item label="外部访问地址">
+                                <el-input v-model="kafka.externalAddress" placeholder="可以是某个宿主机的主机名"/>
+                            </el-form-item>
                             <el-form-item label="实例数量">
                                 <el-input v-model="kafka.size" placeholder="请输入实例数量"/>
                             </el-form-item>
@@ -79,6 +82,7 @@
                     storage: "",
                 },
                 kafka: {
+                    externalAddress: "",
                     size: 3,
                     minSize: 1,
                     clientPort: 9092,

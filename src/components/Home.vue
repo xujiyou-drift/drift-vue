@@ -13,9 +13,11 @@
                 <el-table-column
                         label="Ready" width="100">
                     <template slot-scope="scope">
-                        <span>{{ sumRunning(scope.row.status.containerStatuses) }}</span>
-                        /
-                        <span>{{ scope.row.status.containerStatuses.length }}</span>
+                        <span v-if="scope.row.status.containerStatuses !== undefined">
+                            <span>{{ sumRunning(scope.row.status.containerStatuses) }}</span>
+                            /
+                            <span>{{ scope.row.status.containerStatuses.length }}</span>
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column
